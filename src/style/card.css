@@ -1,0 +1,38 @@
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px; 
+  justify-content: flex-start;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.card-item {
+  list-style-type: none;
+  border: 1px solid black;
+  border-radius: 12px;
+  display: block;
+  flex: 0 0 calc(28% - 10px);
+  box-sizing: border-box;
+  text-align: center;
+  max-width: 300px;
+  min-width: 200px;
+  margin: 0; 
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: 5px auto;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: large;
+}
+.add-to-card-button{
+    padding: 20px;
+    display: block;
+    background-color: blanchedalmond;
+}
