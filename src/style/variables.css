@@ -1,0 +1,14 @@
+:root {
+    /* Màu sắc */
+    --primary-color: #1ED760; /* Màu chính */
+    --hover-color: #0e100f; /* Màu hover */
+    --text-color: #0f0e0e;
+    --text-color-button-hover: #f8f8f8;
+    --background-color:  #0e100f;
+    /* Font chữ */
+    --button-color: #0b0808b0;
+    --font-family: 'Arial', sans-serif; /* Font chữ */
+    
+    /* Kích thước chữ */
+    --font-size: 19px; /* Kích thước chữ */
+}

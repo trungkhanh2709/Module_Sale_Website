@@ -1,0 +1,34 @@
+@import url('./variables.css');
+*{
+    margin: 0;
+    padding: 0;
+    /* background-color: var(--background-color); */
+}
+#menu-header{
+    background-color: var(--primary-color);
+    height: fit-content;
+}
+#menu-ul-header{
+    display: flex;
+    justify-content: center;
+
+}
+.menu-li-header{
+    list-style-type: none;
+}
+.menu-a-header{
+    color: #FFFFFF;
+    display: block;
+    text-decoration: none;
+    padding:15px 20px ;
+    background-color: var(--primary-color) ;
+    margin: 0 10px;
+    font-size: 19px;
+    /* border: 1px black solid; */
+}
+.menu-a-header:hover {
+    background-color: transparent; /* Giữ nguyên màu nền của menu-a-header */
+}
+.menu-a-header:hover ~ #menu-header{
+    /* background-color:#c9cdcb ; */
+}
