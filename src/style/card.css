@@ -11,7 +11,7 @@
 
 .card-item {
   list-style-type: none;
-  border: 2px solid rgba(0, 0, 0, 0.377);
+  border: 2px solid rgba(0, 0, 0, 0.247);
   border-radius: 8px;
   display: block;
   flex: 0 0 calc(28% - 10px);
@@ -77,9 +77,9 @@
 }
 .cart_plus,
 .HeartIcon {
-  width: 20px;
+  width: 18px;
 
-  height: 20px;
+  height: 18px;
 }
 .cart_and_heart_icon {
   display: flex;
@@ -89,4 +89,34 @@
 
 .button_text{
   text-decoration: none;
+}
+.heart-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.HeartIcon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease, fill 0.3s ease; 
+}
+
+.HeartIcon:hover {
+  transform: scale(1.2); 
+}
+
+.heart-icon.clicked .HeartIcon {
+  animation: heartBounce 0.3s ease; 
+}
+
+@keyframes heartBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

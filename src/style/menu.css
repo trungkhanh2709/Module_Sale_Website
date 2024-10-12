@@ -6,7 +6,10 @@
 }
 #menu-header{
     background-color: var(--primary-color);
-    height: fit-content;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #menu-ul-header{
     display: flex;
@@ -27,8 +30,71 @@
     /* border: 1px black solid; */
 }
 .menu-a-header:hover {
-    background-color: transparent; /* Giữ nguyên màu nền của menu-a-header */
+    background-color: transparent;
 }
 .menu-a-header:hover ~ #menu-header{
     /* background-color:#c9cdcb ; */
 }
+
+.search_container{
+  position: relative;
+  
+  display: flex;
+align-items: center;
+}
+#Search_Bar{
+    display: block;
+    width: 90%;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 12px;
+    border: var(--primary-color) ;
+}
+/* .search-icon{
+    position: relative;
+    left: 10px;
+    height: 20px;
+    width: 20px;
+    pointer-events: none
+} */
+ .view-search-product{
+    position: relative;
+    top: 10px;
+ }
+ .search-container {
+    position: relative; 
+  }
+  
+  .suggestions {
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    right: 0;
+    background: white; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    z-index: 10; 
+    max-height: 200px; 
+    overflow-y: auto; 
+  }
+  
+  .suggestions ul {
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+  }
+  
+  .suggestions li {
+    padding: 10px; 
+    cursor: pointer; 
+  }
+  
+  .suggestions li:hover {
+    background-color: #f0f0f0; 
+  }
+  .a_suggestion{
+    text-decoration: none;
+    font-size: 14px;
+    color: var(--text-color);
+  }
+  
