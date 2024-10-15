@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../style/menu.css";
 import products from "../assets/data/product"; 
+import logoImage from "../assets/svg/menuLogo.svg"
 
 export function Menu() {
   const [searchInput, setSearchInput] = useState("");
@@ -39,6 +40,7 @@ export function Menu() {
   return (
     <div>
       <nav id="menu-header">
+        <img className="logo_menu" src= {logoImage}></img>
         <ul id="menu-ul-header">
           <li className="menu-li-header">
             <a href="" className="menu-a-header">Home</a>
