@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // To get the URL parameter
 import { StarIcon } from '@heroicons/react/20/solid';
-import products from "../assets/data/product.js"; // Assuming products is an array of objects
+import products from "../assets/data/product.js"; // Adjust path if necessary
 
 const reviews = { href: '#', average: 4, totalCount: 117 };
 
@@ -10,14 +11,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function ProductView({ productId }) {
+export function ProductView() {
+  const { id } = useParams(); // Get the product ID from the URL
   const [product, setProduct] = useState(null);
 
   // Fetch the product data based on the productId
   useEffect(() => {
-    const foundProduct = products.find((p) => p.id === productId);
+    const foundProduct = products.find((p) => p.id === id); // Find the product by ID
     setProduct(foundProduct);
-  }, [productId]);
+  }, [id]);
 
   if (!product) return <div>Loading...</div>;
 

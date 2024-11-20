@@ -10,7 +10,7 @@ export function ProductPage(){
 
     const handleProductClick = (id) => {
       setSelectedProductId(id);
-      // Here you can navigate to another component or show details based on the selected product id
+ 
       console.log("Selected product ID:", id);
     };
     return(

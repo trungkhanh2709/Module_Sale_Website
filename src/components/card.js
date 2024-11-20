@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import products from "../assets/data/product.js";
-import "../style/card.css";
+// import "../style/card.css";
 import { ReactComponent as HeartIcon } from "../assets/svg/heart-regular.svg";
 import { ReactComponent as CartPlus } from "../assets/svg/cart-plus-solid.svg";
 import { ReactComponent as HeartIconFill } from "../assets/svg/HeartFill.svg";

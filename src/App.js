@@ -1,13 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
-import { ProductPage } from "./pages/Product";
-import { Product } from './pages/Product';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {ProductPage} from "../src/pages/Product"
+import {ProductView} from "./components/Productviews"; 
 
 function App() {
   return (
-    <div >
-    <ProductPage></ProductPage>
-  </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ProductPage />} />
+        <Route path="/product/:id" element={<ProductView />} />
+      </Routes>
+    </Router>
   );
 }
 

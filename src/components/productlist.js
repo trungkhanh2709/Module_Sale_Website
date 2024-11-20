@@ -1,13 +1,14 @@
-import { useState } from "react";
-import products from "../assets/data/product.js";
+import { useNavigate } from "react-router-dom";
+import products from "../assets/data/product.js"; // Adjust path if necessary
 
-export function ProductList({onProductClick}) {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+export function ProductList() {
+  const navigate = useNavigate();
 
   const handleProductClick = (id) => {
-    setSelectedProduct(id);
-    onProductClick(id); // Pass the selected id to the parent component
+    // Navigate to the ProductView page with the product ID
+    navigate(`/product/${id}`);
   };
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -15,7 +16,11 @@ export function ProductList({onProductClick}) {
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
-            <div key={product.id} className="group relative" onClick={() => handleProductClick(product.id)}>
+            <div
+              key={product.id}
+              className="group relative"
+              onClick={() => handleProductClick(product.id)} // Handle click
+            >
               <img
                 alt={product.imageAlt}
                 src={product.imageSrc}
@@ -43,5 +48,3 @@ export function ProductList({onProductClick}) {
     </div>
   );
 }
-
-  
