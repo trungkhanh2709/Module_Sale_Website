@@ -11,13 +11,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export function ProductView() {
-  const { id } = useParams(); // Get the product ID from the URL
+export function ProductView({ id: propId }) {
+  const { id: routeId } = useParams(); // Lấy id từ URL
+  const id = propId || routeId;
   const [product, setProduct] = useState(null);
 
   // Fetch the product data based on the productId
   useEffect(() => {
-    const foundProduct = products.find((p) => p.id === id); // Find the product by ID
+    const foundProduct = products.find((p) => p.id === id);
     setProduct(foundProduct);
   }, [id]);
 
