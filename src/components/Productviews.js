@@ -1,5 +1,3 @@
-'use client'
-
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // To get the URL parameter
 import { StarIcon } from '@heroicons/react/20/solid';
@@ -12,15 +10,38 @@ function classNames(...classes) {
 }
 
 export function ProductView({ id: propId }) {
-  const { id: routeId } = useParams(); // Lấy id từ URL
+  const { id: routeId } = useParams(); // Get id from URL
   const id = propId || routeId;
   const [product, setProduct] = useState(null);
+  const [cartMessage, setCartMessage] = useState(''); // State to show cart message
 
   // Fetch the product data based on the productId
   useEffect(() => {
     const foundProduct = products.find((p) => p.id === id);
     setProduct(foundProduct);
   }, [id]);
+
+  // Function to handle adding product to cart
+  const handleAddToCart = (event) => {
+    event.preventDefault();
+    
+    // Retrieve current cart from localStorage or initialize an empty cart
+    const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Add the product to the cart (you can also add quantity or other details here)
+    currentCart.push(product);
+    
+    // Save the updated cart back to localStorage
+    localStorage.setItem('cart', JSON.stringify(currentCart));
+    
+    // Show a confirmation message
+    setCartMessage(`${product.name} has been added to the cart!`);
+    
+    // Clear the message after 3 seconds
+    setTimeout(() => {
+      setCartMessage('');
+    }, 3000);
+  };
 
   if (!product) return <div>Loading...</div>;
 
@@ -87,7 +108,7 @@ export function ProductView({ id: propId }) {
               </div>
             </div>
 
-            <form className="mt-10">
+            <form className="mt-10" onSubmit={handleAddToCart}>
               <button
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -101,6 +122,11 @@ export function ProductView({ id: propId }) {
                 Buy Now
               </button>
             </form>
+
+            {/* Cart Message */}
+            {cartMessage && (
+              <div className="mt-4 text-green-600 text-sm">{cartMessage}</div>
+            )}
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
