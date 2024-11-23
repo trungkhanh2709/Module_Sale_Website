@@ -6,17 +6,12 @@ export function ProductList() {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]); // State lưu trữ giỏ hàng
 
-  const handleAddToCart = (event, product) => {
-    event.stopPropagation(); // Ngăn chặn sự kiện click trên card
-    setCart((prevCart) => [...prevCart, product]);
-    alert(`${product.name} has been added to the cart!`);
-  };
 
   const handleProductClick = (id) => {
     navigate(`/product/${id}`);
   };
 
-  const truncateName = (name, length = 20) => {
+  const truncateName = (name, length = 16) => {
     if (name.length > length) {
       return name.substring(0, length) + "...";
     }
@@ -34,7 +29,7 @@ export function ProductList() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="group relative"
+              className="group relative border-2 border-gray-200 pb-6 rounded-xl"
               // Chỉ chuyển trang khi click vào ảnh hoặc tên sản phẩm
               onClick={() => handleProductClick(product.id)}
             >
@@ -45,27 +40,33 @@ export function ProductList() {
               />
               <div className="mt-4 flex justify-between">
                 <div>
-                  <h2 className="text-base text-gray-700">
+                <h2 className="text-lg font-bold pl-2 text-gray-700">
                     <a href={product.href}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {truncateName(product.name)}
                     </a>
                   </h2>
+                  <h3 className="text-base pl-2 text-gray-700">
+                   
+                      <span aria-hidden="true" className="absolute inset-0" />
+                      {(product.owner)}
+                    
+                  </h3>
 
-                  <button
+                  {/* <button
                     onClick={(event) => handleAddToCart(event, product)} // Ngăn sự kiện lan tỏa
                     className="mt-2 w-full rounded-md bg-blue-600 text-white py-2 text-sm font-medium hover:bg-blue-700"
                   >
                     Add to Cart
-                  </button>
+                  </button> */}
                 </div>
                 <div className="flex flex-col items-end">
-                  <p className="text-base font-medium text-gray-900">
+                  <p className="text-lg pr-2 font-medium text-green-500">
                     {product.price}
                   </p>
-                  <button className="mt-1 text-blue-500 hover:text-blue-700 font-bold">
+                  {/* <button className="mt-1 text-blue-500 hover:text-blue-700 font-bold">
                     Buy Now
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

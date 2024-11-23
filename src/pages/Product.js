@@ -1,5 +1,4 @@
 import Menu from "../components/menu";
-import { Card } from "../components/card";
 import { useState } from "react";
 
 import { ProductList } from "../components/productlist";

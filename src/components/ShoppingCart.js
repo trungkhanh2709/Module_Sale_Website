@@ -18,7 +18,14 @@ export function ShoppingCart() {
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
+  
+    // Gửi sự kiện để cập nhật số lượng giỏ hàng
+    const cartUpdateEvent = new CustomEvent('cartUpdate', {
+      detail: { cartCount: updatedCart.length },
+    });
+    window.dispatchEvent(cartUpdateEvent);
   };
+  
 
   // Xử lý checkbox chọn sản phẩm
   const handleSelectItem = (id) => {

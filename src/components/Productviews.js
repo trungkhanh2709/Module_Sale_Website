@@ -24,24 +24,31 @@ export function ProductView({ id: propId }) {
   // Function to handle adding product to cart
   const handleAddToCart = (event) => {
     event.preventDefault();
-    
-    // Retrieve current cart from localStorage or initialize an empty cart
+  
     const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Add the product to the cart (you can also add quantity or other details here)
-    currentCart.push(product);
-    
-    // Save the updated cart back to localStorage
-    localStorage.setItem('cart', JSON.stringify(currentCart));
-    
-    // Show a confirmation message
-    setCartMessage(`${product.name} has been added to the cart!`);
-    
-    // Clear the message after 3 seconds
+    const isProductInCart = currentCart.some((item) => item.id === product.id);
+  
+    if (isProductInCart) {
+      alert(`${product.name} is already in the cart.`);
+    } else {
+      currentCart.push(product);
+      localStorage.setItem('cart', JSON.stringify(currentCart));
+  
+      // Tạo một sự kiện tùy chỉnh để thông báo cập nhật giỏ hàng
+      const cartUpdateEvent = new CustomEvent('cartUpdate', {
+        detail: { cartCount: currentCart.length },
+      });
+      window.dispatchEvent(cartUpdateEvent);
+  
+      alert(`${product.name} has been added to the cart!`);
+    }
+  
     setTimeout(() => {
       setCartMessage('');
-    }, 3000);
+    }, 5000);
   };
+  
+  
 
   if (!product) return <div>Loading...</div>;
 
@@ -57,19 +64,19 @@ export function ProductView({ id: propId }) {
           />
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <img
+              alt={product.images[0].alt}
+              src={product.images[0].src}
+              className="aspect-[3/2] size-full rounded-lg object-cover"
+            />
+            <img
               alt={product.images[1].alt}
               src={product.images[1].src}
               className="aspect-[3/2] size-full rounded-lg object-cover"
             />
-            <img
-              alt={product.images[2].alt}
-              src={product.images[2].src}
-              className="aspect-[3/2] size-full rounded-lg object-cover"
-            />
           </div>
           <img
-            alt={product.images[3].alt}
-            src={product.images[3].src}
+            alt={product.images[2].alt}
+            src={product.images[2].src}
             className="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-[3/4]"
           />
         </div>
