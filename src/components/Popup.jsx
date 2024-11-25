@@ -11,8 +11,8 @@ const Popup = ({ isOpen, closePopup }) => {
   const numberMask = useRef(null)
   const cvcRef = useRef(null)
   const cvcMask = useRef(null)
-
   const creditCardRef = useRef(null)
+
   useEffect(() => {
     expiredMask.current = new IMask(expiredRef.current, {
       mask: 'MM{/}YY',
@@ -41,18 +41,46 @@ const Popup = ({ isOpen, closePopup }) => {
       if (cvcMask.current) expiredMask.current.destroy()
     }
   }, [])
+
   const dfCardInfo = {
-    number: '0123 4567 8910 1112',
+    number: '0000 0000 0000 0000',
     name: 'BUI DUC TUAN',
     expired: '01/27',
     cvc: '575',
   }
-  const [cardInfo, setCardInfo] = useState(dfCardInfo)
+  const dfError = {
+    name: false,
+    number: false,
+    expired: false,
+    cvc: false,
+  }
+  const [cardInfo, setCardInfo] = useState({})
   const onChangeCard = (field, value) => {
-    setCardInfo((prevalue) => ({
-      ...prevalue,
-      [field]: value || dfCardInfo[field],
+    setCardInfo((prev) => ({
+      ...prev,
+      [field]:
+        value !== undefined && value !== null ? value : dfCardInfo[field],
     }))
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: false,
+    }))
+  }
+  const [errors, setErrors] = useState(dfError)
+  const validateFields = () => {
+    const err = {
+      name: !nameRef.current.value.trim(),
+      number: !numberRef.current.value
+        .trim()
+        .replace(/\s/g, '')
+        .match(/^\d{16}$/),
+      expired:
+        !expiredRef.current.value.trim() ||
+        !/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardInfo.expired),
+      cvc: !cvcRef.current.value.trim() || cardInfo.cvc.length !== 3,
+    }
+    setErrors(err)
+    return !Object.values(err).some((error) => error)
   }
   /**
    * @ Reset input value if component unmount
@@ -66,8 +94,7 @@ const Popup = ({ isOpen, closePopup }) => {
   }
   const wrapperCard = () => {
     if (creditCardRef.current) {
-      const card = creditCardRef.current
-      card.classList.toggle('flipped')
+      creditCardRef.current.classList.toggle('flipped')
     }
   }
   /* @Purpose: Input Validate
@@ -81,15 +108,23 @@ const Popup = ({ isOpen, closePopup }) => {
       e.preventDefault()
     }
   }
+
   const payment = (e) => {
     e.preventDefault()
-    console.log(nameRef.current.value)
-    console.log(numberRef.current.value)
-    console.log(cvcRef.current.value)
-    console.log(expiredRef.current.value)
-    closePopup(clean)
+    const isValid = validateFields()
+    if (isValid) {
+      window.alert('Download....')
+      closePopup()
+    }
   }
-
+  useEffect(() => {
+    if (!isOpen) clean()
+  }, [isOpen])
+  const onFocusFrontCard = () => {
+    if (creditCardRef.current) {
+      creditCardRef.current.classList.remove('flipped')
+    }
+  }
   return (
     <div className={`popup-overlay ${isOpen ? 'd-block' : 'd-none'}`}>
       <div className={`popup ${isOpen ? 'd-block' : 'd-none'}`}>
@@ -229,17 +264,17 @@ const Popup = ({ isOpen, closePopup }) => {
           <div className="field-container">
             <label htmlFor="name">Name</label>
             <input
+              className={errors.name ? 'input-error' : ''}
               id="name"
               maxLength="20"
               type="text"
               ref={nameRef}
-              onFocus={() => {
-                document
-                  .querySelector('.creditcard')
-                  .classList.remove('flipped')
-              }}
+              onFocus={onFocusFrontCard}
               onChange={(event) => onChangeCard('name', event.target.value)}
             />
+            {errors.name && (
+              <small className="error-text">Vui lòng nhập tên!</small>
+            )}
           </div>
           <div className="field-container">
             <label htmlFor="number">Card Number</label>
@@ -248,13 +283,12 @@ const Popup = ({ isOpen, closePopup }) => {
               type="text"
               maxLength="20"
               ref={numberRef}
-              onFocus={() => {
-                document
-                  .querySelector('.creditcard')
-                  .classList.remove('flipped')
-              }}
+              onFocus={onFocusFrontCard}
               onChange={(event) => onChangeCard('number', event.target.value)}
             />
+            {errors.number && (
+              <small className="error-text">Vui lòng nhập số thẻ hợp lệ!</small>
+            )}
           </div>
           <div className="field-container">
             <label htmlFor="expired">Expiration (mm/yy)</label>
@@ -263,15 +297,17 @@ const Popup = ({ isOpen, closePopup }) => {
               id="expired"
               maxLength="5"
               type="text"
+              className={errors.expired ? 'input-error' : ''}
               inputMode="numeric"
               placeholder="MM/YY"
-              onFocus={() => {
-                document
-                  .querySelector('.creditcard')
-                  .classList.remove('flipped')
-              }}
+              onFocus={onFocusFrontCard}
               onChange={(event) => onChangeCard('expired', event.target.value)}
             />
+            {errors.expired && (
+              <small className="error-text">
+                Vui lòng nhập ngày hết hạn hợp lệ (MM/YY)!
+              </small>
+            )}
           </div>
           <div className="field-container">
             <label htmlFor="securitycode">Security Code</label>
@@ -279,12 +315,16 @@ const Popup = ({ isOpen, closePopup }) => {
               type="text"
               maxLength="3"
               ref={cvcRef}
+              className={errors.cvc ? 'input-error' : ''}
               inputMode="numeric"
               onFocus={() => {
                 document.querySelector('.creditcard').classList.add('flipped')
               }}
               onChange={(event) => onChangeCard('cvc', event.target.value)}
             />
+            {errors.cvc && (
+              <small className="error-text">Vui lòng nhập CVC hợp lệ !!!</small>
+            )}
           </div>
         </div>
         <div className="d-flex justify-center m-auto items-center">
@@ -296,12 +336,7 @@ const Popup = ({ isOpen, closePopup }) => {
           >
             Xác nhận
           </button>
-          <button
-            className="btn btn-danger"
-            onClick={() => {
-              closePopup(clean)
-            }}
-          >
+          <button className="btn btn-danger" onClick={closePopup}>
             Trở về
           </button>
         </div>

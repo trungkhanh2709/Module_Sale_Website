@@ -23,6 +23,14 @@
   margin-top: 20px;
   z-index: 10000;
 }
+.input-error {
+  border: 1px solid red;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8rem;
+}
 
 .payment-title {
   width: 100%;

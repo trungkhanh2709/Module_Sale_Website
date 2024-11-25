@@ -54,9 +54,8 @@ export function ProductView({ id: propId }) {
     event.preventDefault()
     setIsOpen(true)
   }
-  const closePopup = (callback) => {
+  const closePopup = () => {
     setIsOpen(false)
-    callback()
   }
 
   if (!product) return <img src={loader} alt="Loading..." />
