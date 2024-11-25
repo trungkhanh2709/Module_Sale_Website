@@ -11,4 +11,18 @@
     
     /* Kích thước chữ */
     --font-size: 19px; /* Kích thước chữ */
+
+    --hue: 223;
+	--sat: 10%;
+	--gray0: hsl(0,0%,100%);
+	--gray1: hsl(var(--hue),var(--sat),90%);
+	--gray2: hsl(var(--hue),var(--sat),80%);
+	--gray3: hsl(var(--hue),var(--sat),70%);
+	--gray4: hsl(var(--hue),var(--sat),60%);
+	--gray5: hsl(var(--hue),var(--sat),50%);
+	--gray6: hsl(var(--hue),var(--sat),40%);
+	--gray7: hsl(var(--hue),var(--sat),30%);
+	--gray8: hsl(var(--hue),var(--sat),20%);
+	--gray9: hsl(var(--hue),var(--sat),10%);
+	--trans-dur: 0.3s;
 }

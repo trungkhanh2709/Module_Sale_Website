@@ -1,56 +1,65 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // To get the URL parameter
-import { StarIcon } from '@heroicons/react/20/solid';
-import products from "../assets/data/product.js"; // Adjust path if necessary
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom' // To get the URL parameter
+import { StarIcon } from '@heroicons/react/20/solid'
+import products from '../assets/data/product.js' // Adjust path if necessary
+import loader from '../assets/svg/loader.svg'
+import Popup from './Popup.jsx'
 
-const reviews = { href: '#', average: 4, totalCount: 117 };
+const reviews = { href: '#', average: 4, totalCount: 117 }
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export function ProductView({ id: propId }) {
-  const { id: routeId } = useParams(); // Get id from URL
-  const id = propId || routeId;
-  const [product, setProduct] = useState(null);
-  const [cartMessage, setCartMessage] = useState(''); // State to show cart message
-
+  const { id: routeId } = useParams() // Get id from URL
+  const id = propId || routeId
+  const [product, setProduct] = useState(null)
+  const [cartMessage, setCartMessage] = useState('') // State to show cart message
   // Fetch the product data based on the productId
   useEffect(() => {
-    const foundProduct = products.find((p) => p.id === id);
-    setProduct(foundProduct);
-  }, [id]);
+    const foundProduct = products.find((p) => p.id === id)
+    setProduct(foundProduct)
+  }, [id])
 
   // Function to handle adding product to cart
   const handleAddToCart = (event) => {
-    event.preventDefault();
-  
-    const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const isProductInCart = currentCart.some((item) => item.id === product.id);
-  
+    event.preventDefault()
+
+    const currentCart = JSON.parse(localStorage.getItem('cart')) || []
+    const isProductInCart = currentCart.some((item) => item.id === product.id)
+
     if (isProductInCart) {
-      alert(`${product.name} is already in the cart.`);
+      alert(`${product.name} is already in the cart.`)
     } else {
-      currentCart.push(product);
-      localStorage.setItem('cart', JSON.stringify(currentCart));
-  
+      currentCart.push(product)
+      localStorage.setItem('cart', JSON.stringify(currentCart))
+
       // Tạo một sự kiện tùy chỉnh để thông báo cập nhật giỏ hàng
       const cartUpdateEvent = new CustomEvent('cartUpdate', {
         detail: { cartCount: currentCart.length },
-      });
-      window.dispatchEvent(cartUpdateEvent);
-  
-      alert(`${product.name} has been added to the cart!`);
-    }
-  
-    setTimeout(() => {
-      setCartMessage('');
-    }, 5000);
-  };
-  
-  
+      })
+      window.dispatchEvent(cartUpdateEvent)
 
-  if (!product) return <div>Loading...</div>;
+      alert(`${product.name} has been added to the cart!`)
+    }
+
+    setTimeout(() => {
+      setCartMessage('')
+    }, 5000)
+  }
+
+  const [isOpen, setIsOpen] = useState(false)
+  const openPopup = (event) => {
+    event.preventDefault()
+    setIsOpen(true)
+  }
+  const closePopup = (callback) => {
+    setIsOpen(false)
+    callback()
+  }
+
+  if (!product) return <img src={loader} alt="Loading..." />
 
   return (
     <div className="bg-white">
@@ -80,17 +89,20 @@ export function ProductView({ id: propId }) {
             className="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-[3/4]"
           />
         </div>
-
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              {product.name}
+            </h1>
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+            <p className="text-3xl tracking-tight text-gray-900">
+              {product.price}
+            </p>
 
             {/* Reviews */}
             <div className="mt-6">
@@ -102,14 +114,19 @@ export function ProductView({ id: propId }) {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        reviews.average > rating ? 'text-gray-900' : 'text-gray-200',
-                        'size-5 shrink-0',
+                        reviews.average > rating
+                          ? 'text-gray-900'
+                          : 'text-gray-200',
+                        'size-5 shrink-0'
                       )}
                     />
                   ))}
                 </div>
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                <a
+                  href={reviews.href}
+                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                >
                   {reviews.totalCount} reviews
                 </a>
               </div>
@@ -122,14 +139,18 @@ export function ProductView({ id: propId }) {
               >
                 Add to cart
               </button>
-              <button
-                type="submit"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Buy Now
-              </button>
             </form>
-
+            {/* -------------------------------------------------- */}
+            {/* Thanh toán hiển thị Popup */}
+            <button
+              onClick={openPopup}
+              type="submit"
+              className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Thanh toán
+            </button>
+            <Popup isOpen={isOpen} closePopup={closePopup} />
+            {/* -------------------------------------------------- */}
             {/* Cart Message */}
             {cartMessage && (
               <div className="mt-4 text-green-600 text-sm">{cartMessage}</div>
@@ -168,5 +189,5 @@ export function ProductView({ id: propId }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
