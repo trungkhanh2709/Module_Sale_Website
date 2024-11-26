@@ -23,7 +23,7 @@ const ProductItem = (props) => {
       <div className="mt-4 flex justify-between">
         <div>
           <h2 className="text-lg font-bold pl-2 text-gray-700">
-            <a href={props.href}>
+            <a href={props.href} className='text-black no-underline'>
               <span aria-hidden="true" className="absolute inset-0" />
               {truncateName(props.name)}
             </a>
@@ -43,9 +43,7 @@ const ProductItem = (props) => {
           <p className="text-lg pr-2 font-medium text-green-500">
             {props.price}
           </p>
-          <button className="mt-1 mr-2 text-blue-500 hover:text-blue-700 font-bold">
-            Mua ngay
-          </button>
+         
         </div>
       </div>
     </div>

@@ -35,7 +35,6 @@ export function ProductView({ id: propId }) {
       currentCart.push(product)
       localStorage.setItem('cart', JSON.stringify(currentCart))
 
-      // Tạo một sự kiện tùy chỉnh để thông báo cập nhật giỏ hàng
       const cartUpdateEvent = new CustomEvent('cartUpdate', {
         detail: { cartCount: currentCart.length },
       })
@@ -103,33 +102,7 @@ export function ProductView({ id: propId }) {
               {product.price}
             </p>
 
-            {/* Reviews */}
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      aria-hidden="true"
-                      className={classNames(
-                        reviews.average > rating
-                          ? 'text-gray-900'
-                          : 'text-gray-200',
-                        'size-5 shrink-0'
-                      )}
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a
-                  href={reviews.href}
-                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  {reviews.totalCount} reviews
-                </a>
-              </div>
-            </div>
+ 
 
             <form className="mt-10" onSubmit={handleAddToCart}>
               <button

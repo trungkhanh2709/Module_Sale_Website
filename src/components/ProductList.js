@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import ProductItem from './ProductItem.jsx'
 
 export function ProductList() {
-  const navigate = useNavigate()
-  const [cart, setCart] = useState([]) // State lưu trữ giỏ hàng
 
   return (
     <div className="bg-white">

@@ -19,7 +19,6 @@ export function ShoppingCart() {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   
-    // Gửi sự kiện để cập nhật số lượng giỏ hàng
     const cartUpdateEvent = new CustomEvent('cartUpdate', {
       detail: { cartCount: updatedCart.length },
     });
@@ -31,8 +30,8 @@ export function ShoppingCart() {
   const handleSelectItem = (id) => {
     setSelectedItems((prevSelected) =>
       prevSelected.includes(id)
-        ? prevSelected.filter((itemId) => itemId !== id) // Bỏ chọn
-        : [...prevSelected, id] // Thêm vào danh sách đã chọn
+        ? prevSelected.filter((itemId) => itemId !== id) 
+        : [...prevSelected, id] 
     );
   };
 
