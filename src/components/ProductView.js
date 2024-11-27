@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom' // To get the URL parameter
-import { StarIcon } from '@heroicons/react/20/solid'
 import products from '../assets/data/product.js' // Adjust path if necessary
 import loader from '../assets/svg/loader.svg'
 import Popup from './Popup.jsx'
@@ -101,8 +100,6 @@ export function ProductView({ id: propId }) {
             <p className="text-3xl tracking-tight text-gray-900">
               {product.price}
             </p>
-
- 
 
             <form className="mt-10" onSubmit={handleAddToCart}>
               <button

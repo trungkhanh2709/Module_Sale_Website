@@ -4,14 +4,14 @@ import '../style/Popup.css'
 import IMask from 'imask'
 
 const Popup = ({ isOpen, closePopup }) => {
+  const creditCardRef = useRef(null)
   const expiredRef = useRef(null)
-  const expiredMask = useRef(null)
   const nameRef = useRef(null)
   const numberRef = useRef(null)
-  const numberMask = useRef(null)
   const cvcRef = useRef(null)
+  const expiredMask = useRef(null)
+  const numberMask = useRef(null)
   const cvcMask = useRef(null)
-  const creditCardRef = useRef(null)
 
   useEffect(() => {
     expiredMask.current = new IMask(expiredRef.current, {
@@ -40,13 +40,13 @@ const Popup = ({ isOpen, closePopup }) => {
       if (numberMask.current) expiredMask.current.destroy()
       if (cvcMask.current) expiredMask.current.destroy()
     }
-  }, [])
+  }, [cvcRef, numberRef, nameRef, expiredRef])
 
   const dfCardInfo = {
     number: '0000 0000 0000 0000',
-    name: 'BUI DUC TUAN',
-    expired: '01/27',
-    cvc: '575',
+    name: 'NAME',
+    expired: '00/00',
+    cvc: '000',
   }
   const dfError = {
     name: false,
@@ -76,8 +76,8 @@ const Popup = ({ isOpen, closePopup }) => {
         .match(/^\d{16}$/),
       expired:
         !expiredRef.current.value.trim() ||
-        !/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardInfo.expired),
-      cvc: !cvcRef.current.value.trim() || cardInfo.cvc.length !== 3,
+        !/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiredRef.current.value),
+      cvc: !cvcRef.current.value.trim() || cvcRef.current.value.length !== 3,
     }
     setErrors(err)
     return !Object.values(err).some((error) => error)
@@ -91,6 +91,7 @@ const Popup = ({ isOpen, closePopup }) => {
     if (cvcRef.current) cvcRef.current.value = ''
     if (nameRef.current) nameRef.current.value = ''
     setCardInfo(dfCardInfo)
+    setErrors(dfError)
   }
   const wrapperCard = () => {
     if (creditCardRef.current) {
@@ -127,7 +128,7 @@ const Popup = ({ isOpen, closePopup }) => {
   }
   return (
     <div className={`popup-overlay ${isOpen ? 'd-block' : 'd-none'}`}>
-      <div className={`popup ${isOpen ? 'd-block' : 'd-none'}`}>
+      <div className={`popup`}>
         <div className="container preload">
           <div ref={creditCardRef} className="creditcard" onClick={wrapperCard}>
             <div className="front">
@@ -268,6 +269,7 @@ const Popup = ({ isOpen, closePopup }) => {
               id="name"
               maxLength="20"
               type="text"
+              placeholder="CARD NAME"
               ref={nameRef}
               onFocus={onFocusFrontCard}
               onChange={(event) => onChangeCard('name', event.target.value)}
